@@ -1,55 +1,48 @@
 import heapq
 
-# ฟังก์ชัน Dijkstra เพื่อหาทางที่สั้นที่สุด
 def dijkstra(graph, start, end):
-    # กำหนดระยะทางเริ่มต้นสำหรับแต่ละโหนด
-    distances = {node: float('inf') for node in graph}
-    distances[start] = 0  # ระยะทางจากจุดเริ่มต้นเป็น 0
-    
-    # ใช้ heapq เพื่อให้การเลือกโหนดที่ใกล้ที่สุดเร็วขึ้น
-    priority_queue = [(0, start)]  # (ระยะทาง, โหนด)
-    previous_nodes = {node: None for node in graph}  # เพื่อเก็บเส้นทางที่เดินผ่าน
+    # กำหนดระยะทางเริ่มต้น
+    distances = {start: 0}
+    previous_nodes = {start: None}
+    priority_queue = [(0, start)]
     
     while priority_queue:
+
         current_distance, current_node = heapq.heappop(priority_queue)
         
-        # ถ้าเราเจอระยะทางที่ใหญ่กว่าที่คำนวณได้แล้ว ไม่ต้องทำอะไร
-        if current_distance > distances[current_node]:
-            continue
+        if current_node == end:
+            break
         
-        # ตรวจสอบเพื่อนบ้านของโหนดปัจจุบัน
-        for neighbor, weight in graph[current_node].items():
+        for neighbor, weight in graph.get(current_node, {}).items():
             distance = current_distance + weight
-            
-            # อัพเดตระยะทางถ้าคำนวณได้ระยะทางที่สั้นกว่า
-            if distance < distances[neighbor]:
+            if neighbor not in distances or distance < distances[neighbor]:
                 distances[neighbor] = distance
                 previous_nodes[neighbor] = current_node
                 heapq.heappush(priority_queue, (distance, neighbor))
+
     
-    # สร้างเส้นทางจาก start ไปยัง end โดยการย้อนกลับจาก end
+    # สร้างเส้นทางจาก start ไปยัง end
     path = []
     current_node = end
-    while current_node is not None:
+    while current_node:
         path.append(current_node)
-        current_node = previous_nodes[current_node]
+        current_node = previous_nodes.get(current_node)
     path.reverse()
     
-    return distances[end], path
+    return distances.get(end, float('inf')), path
 
-# กราฟตัวอย่าง (Adjacency List) สำหรับการเดินทางในแผนที่
-# โหนดคือเมืองต่างๆ และขอบคือถนนที่เชื่อมโยงกัน มีระยะทางที่แตกต่างกัน
+# กราฟตัวอย่าง
 graph = {
-    'CityA': {'CityB': 10, 'CityC': 15},
-    'CityB': {'CityA': 10, 'CityD': 20},
-    'CityC': {'CityA': 15, 'CityD': 30},
-    'CityD': {'CityB': 20, 'CityC': 30, 'CityE': 5},
-    'CityE': {'CityD': 5}
+    'A': {'B': 10, 'C': 15},
+    'B': {'A': 10, 'D': 20},
+    'C': {'A': 15, 'D': 30},
+    'D': {'B': 20, 'C': 30, 'E': 5},
+    'E': {'D': 5}
 }
 
-# เรียกใช้ฟังก์ชัน Dijkstra เพื่อหาทางที่สั้นที่สุดจาก 'CityA' ไปยัง 'CityE'
-start_node = 'CityA'
-end_node = 'CityE'
+# เรียกใช้ฟังก์ชัน Dijkstra
+start_node = 'A'
+end_node = 'E'
 distance, path = dijkstra(graph, start_node, end_node)
 
 # แสดงผลลัพธ์
