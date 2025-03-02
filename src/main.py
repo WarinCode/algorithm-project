@@ -1,29 +1,29 @@
-# function สำหรับการเช็ค vertices ใน graph ว่าถ้ามีจะ return True ไม่มีจะ return False  
+# function สำหรับการเช็ค vertices ใน graph ว่าถ้ามีจะ return True ไม่มีจะ return False
 def has_vertices(graph, start, end):
-    # เก็บเป็น set เพื่อให้ไม่มี vertices มีค่าซ้ำกัน
+    # เก็บเป็น set เพื่อให้ไม่มี vertices ที่มีค่าซ้ำกัน
     all_vertices = set()
 
     # วนลูปรอบแรกของ graph ให้ดึง key และ value ใน dict ออกมา
     for key, values in graph.items():
         # เพิ่มค่า key ลงใน all_vertices
         all_vertices.add(key)
-        # วนลูปรอบที่สองของ values เพราะ value ที่ได้มาตอนแรกใน dict เป็น list 
+        # วนลูปรอบที่สองของ values เพราะ value ที่ได้มาตอนแรกใน dict เป็น list
         # ต้องวน loop อีกรอบเพื่อได้ค่า element
         for value in values:
             # เพิ่มค่า value
             all_vertices.add(value)
-        
-    # เขียน condition return ออกมาว่าถ้า start และ end อยู่ใน all_vertices 
+
+    # เขียน condition return ออกมาว่าถ้า start และ end อยู่ใน all_vertices
     # ให้ return True ไม่อยู่ให้ return False
     return start in all_vertices and end in all_vertices
-    
-# Algorithm: Deep-Firth-Search    
+
+
+# Algorithm: Deep-Firth-Search
 def dfs(graph, start, end, path=None):
-    # เช็ค condition นี้ว่าถ้า vertices ที่รับค่ามาจาก paramters ไม่มีอยู่ใน graph ที่ส่งมาให้ return None
+    # เช็ค condition นี้ก่อนว่าถ้า vertices ที่รับค่ามาจาก paramters ไม่มีอยู่ใน graph ให้ throw exception นี้ออกไป
     if not has_vertices(graph, start, end):
-        print("ไม่มี vertices ที่ระบุใน graph!")
-        return None
-        
+        raise Exception(f"ไม่มี vertices {start} หรือ {end} ที่อยู่ใน graph!")
+
     # เช็คว่าถ้าค่า path เป็น None ให้กำหนดค่าเป็น list (สำหรับรัน algorithm นี้ในครั้งแรก)
     if path is None:
         path = []
@@ -35,40 +35,42 @@ def dfs(graph, start, end, path=None):
     if start == end:
         return path
 
-    # วน loop หาเส้นทางของ end เมื่อวน loop ค่าของตัวแปร neighbor จะเป็นค่า value ของ dict 
+    # วน loop หาเส้นทางของ end เมื่อวน loop ค่าของตัวแปร neighbor จะเป็นค่า value ของ dict
     for neighbor in graph[start]:
         # ถ้าค่า neighbor ไม่อยู่ใน path ให้เรียกใช้ dfs ตัวมันเองอีกครั้ง(recursive)
         # และ หลีกเลี่ยงปัญหาเกิดการเก็บค่าเดิมของ path ที่เราเคยเดินมาแล้ว
         if neighbor not in path:
             # ส่ง arguments ไปใหม่เปลี่ยนจาก start -> neightbor ที่เหลือเหมือนเดิม
-            result = dfs(graph, neighbor, end, path.copy()) 
-            # เช็คถ้ามีผลลัพธ์(มี elemnet ใน list) ให้ return ผลลัพธ์นั้นออกมา 
+            result = dfs(graph, neighbor, end, path.copy())
+            # เช็คถ้ามีผลลัพธ์(มี elemnet ใน list) ให้ return ผลลัพธ์นั้นออกมา
             if result:
                 return result  # Return the first found path
-            
+
+
 # เส้นทางของ graph
+# key คือ vertex
+# value คือ vertex ที่เชื่อมต่อด้วยเส้น edge กับ vertex ของ key (neighbor)
 graph = {
-    'A': ['B', 'C'],
-    'B': ['A', 'D'],
-    'C': ['A', 'D'],
-    'D': ['B', 'C', 'E'],
-    'E': ['D']
+    "A": ["B", "C"],
+    "B": ["A", "D"],
+    "C": ["A", "D"],
+    "D": ["B", "C", "E"],
+    "E": ["D"],
 }
 
 # กำหนดค่า start และ end
 # start คือจุดเริ่มต้นใน graph
-start = 'A'
+start = "A"
 # end คือจุดสิ้นสุดใน graph
-end = 'C'
+end = "W"
 
-# เรียกใช้ algorithm: dfs จะได้ค่าออกมา 2 แบบคือ 
-# 1. list ที่เก็บเส้นทางของแต่ละ vertice ที่มันเดินทางไป 
-# 2. None ไม่มีเส้นทาง
-path = dfs(graph, start, end)
-
-# เช็คถ้าค่า path เป็น None ให้แสดงข้อความว่า "ไม่พบเส้นทาง"
-if path is None:
-    print("ไม่พบเส้นทาง")
-else:
+# เขียน try catch เพื่อดักจับอาจจะมีการเกิด exception จาก dfs นี้ไว้
+try:
+    # เรียกใช้ algorithm: dfs เพื่อหาเส้นทาง
+    path = dfs(graph, start, end)
+    # แสดงผลลัพธ์
     print(f"เส้นทางจาก {start} ไปยัง {end} คือ")
-    print( " -> ".join(path))
+    print(" -> ".join(path))
+except Exception as e:
+    # แสดงข้อความของ exception
+    print(e.__str__())
