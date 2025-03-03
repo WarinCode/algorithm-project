@@ -54,7 +54,7 @@ def dfs(graph, start, goal, path=None):
 # start คือจุดเริ่มต้นใน graph
 start = "A"
 # goal คือจุดเป้าหมายที่ต้องไปให้ถึงใน graph
-goal = "E"
+goal = "I"
 
 # เขียน try catch เพื่อดักจับอาจจะมีการเกิด exception จาก dfs นี้ไว้
 try:
