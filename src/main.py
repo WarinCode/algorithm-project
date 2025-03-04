@@ -54,12 +54,12 @@ def dfs(graph, start, goal, path=None):
 # start คือจุดเริ่มต้นใน graph
 start = "A"
 # goal คือจุดเป้าหมายที่ต้องไปให้ถึงใน graph
-goal = "E"
+goal = "I"
 
 # เขียน try catch เพื่อดักจับอาจจะมีการเกิด exception จาก dfs นี้ไว้
 try:
     # เรียกใช้ algorithm: dfs เพื่อหาเส้นทาง
-    path = dfs(all_graphs.graph, start, goal)
+    path = dfs(all_graphs.graph3, start, goal)
     # แสดงผลลัพธ์
     print(f"เส้นทางจาก {start} ไปยัง {goal} คือ")
     print(" -> ".join(path))
