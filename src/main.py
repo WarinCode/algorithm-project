@@ -23,14 +23,14 @@ def has_vertices(graph, start, goal):
 
 # Algorithm: Deep-Firth-Search
 def dfs(graph, start, goal, path=None):
-    # เช็ค condition นี้ก่อนว่าถ้า vertices ที่รับค่ามาจาก paramters ไม่มีอยู่ใน graph ให้ throw exception นี้ออกไป
-    if not has_vertices(graph, start, goal):
-        raise Exception(f"ไม่มี vertices {start} หรือ {goal} ที่อยู่ใน graph!")
-
-    # เช็คว่าถ้าค่า path เป็น None ให้กำหนดค่าเป็น list (สำหรับรัน algorithm นี้ในครั้งแรก)
+    # เช็คว่าถ้าค่า path เป็น None ให้ทำเงื่อนไขต่อไปนี้ (สำหรับรัน algorithm นี้ในครั้งแรก)
     if path is None:
+        # กำหนดค่า path ให้เป็น list
         path = []
-
+        # เช็ค condition นี้ว่าถ้า vertices ที่รับค่ามาจาก paramters ไม่มีอยู่ใน graph ให้ throw exception นี้ออกไป
+        if not has_vertices(graph, start, goal):
+            raise Exception(f"ไม่มี vertices {start} หรือ {goal} ที่อยู่ใน graph!")
+        
     # เพิ่มค่า start ลงใน path
     path.append(start)
 
@@ -54,12 +54,12 @@ def dfs(graph, start, goal, path=None):
 # start คือจุดเริ่มต้นใน graph
 start = "A"
 # goal คือจุดเป้าหมายที่ต้องไปให้ถึงใน graph
-goal = "I"
+goal = "E"
 
 # เขียน try catch เพื่อดักจับอาจจะมีการเกิด exception จาก dfs นี้ไว้
 try:
     # เรียกใช้ algorithm: dfs เพื่อหาเส้นทาง
-    path = dfs(all_graphs.graph3, start, goal)
+    path = dfs(all_graphs.graph, start, goal)
     # แสดงผลลัพธ์
     print(f"เส้นทางจาก {start} ไปยัง {goal} คือ")
     print(" -> ".join(path))
