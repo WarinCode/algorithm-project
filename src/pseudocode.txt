@@ -1,0 +1,18 @@
+Function dfs(graph, start, goal, path=None):
+    If path is None:
+        Set path as an empty list
+        If has_vertices(graph, start, goal) is False:
+            Throw an Exception "No such vertices in graph!"
+    
+    Append start to path
+
+    If start is equal to goal:
+        Return path
+    
+    For each neighbor in graph[start]:
+        If neighbor is not in path:
+            result ← dfs(graph, neighbor, goal, path.copy())
+            If result is not empty:
+                Return result
+
+    Return None (No path found)
