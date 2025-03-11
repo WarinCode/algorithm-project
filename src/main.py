@@ -47,7 +47,7 @@ def dfs(graph, start, goal, path=None):
             result = dfs(graph, neighbor, goal, path.copy())
             # เช็คถ้ามีผลลัพธ์(มี elemnet ใน list) ให้ return ผลลัพธ์นั้นออกมา
             if result:
-                return result  # Return the first found path
+                return result
 
 
 # กำหนดค่า start และ goal
