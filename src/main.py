@@ -8,7 +8,7 @@ def has_vertices(graph, start, goal):
 
     # วนลูปรอบแรกของ graph ให้ดึง key และ value ใน dict ออกมา
     for key, values in graph.items():
-        # เพิ่มค่า key ลงใน all_vertices
+        # เพิ่มค่า key ลงใน vertices
         vertices.add(key)
         # วนลูปรอบที่สองของ values เพราะ value ที่ได้มาตอนแรกใน dict เป็น list
         # ต้องวน loop อีกรอบเพื่อได้ค่า element
@@ -16,12 +16,12 @@ def has_vertices(graph, start, goal):
             # เพิ่มค่า value
             vertices.add(value)
 
-    # เขียน condition return ออกมาว่าถ้า start และ goal อยู่ใน all_vertices
+    # เขียน condition return ออกมาว่าถ้า start และ goal อยู่ใน vertices
     # ให้ return True ไม่อยู่ให้ return False
     return start in vertices and goal in vertices
 
 
-# Algorithm: Deep-Firth-Search
+# Algorithm: Depth-Firth-Search
 def dfs(graph, start, goal, path=None):
     # เช็คว่าถ้าค่า path เป็น None ให้ทำเงื่อนไขต่อไปนี้ (สำหรับรัน algorithm นี้ในครั้งแรก)
     if path is None:
